@@ -56,6 +56,18 @@ func Solution() {
 
 		if isGraduallyIncreasing(levels) || isGraduallyDecreasing(levels) {
 			safeCount += 1
+		} else {
+			for i := 0; i < len(levels); i++ {
+				var reduced []int
+
+				reduced = append(reduced, levels[:i]...)
+				reduced = append(reduced, levels[i+1:]...)
+
+				if isGraduallyIncreasing(reduced) || isGraduallyDecreasing(reduced) {
+					safeCount += 1
+					break
+				}
+			}
 		}
 	})
 
