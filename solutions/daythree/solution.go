@@ -9,6 +9,7 @@ import (
 
 func collectInstructions(instructions *[]string, line string) {
 	var instruction string
+	var commas int
 
 	for _, char := range line {
 		instructionLen := len(instruction)
@@ -50,7 +51,20 @@ func collectInstructions(instructions *[]string, line string) {
 					}
 				default:
 					switch char {
-					case '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', ',':
+					case ',':
+						if commas == 1 {
+							instruction = "" // invalid
+						} else {
+							instruction += ","
+							commas++
+						}
+					case ')':
+						if commas == 1 {
+							instruction += ")"
+						} else {
+							instruction = "" // invalid
+						}
+					case '0', '1', '2', '3', '4', '5', '6', '7', '8', '9':
 						instruction += string(char)
 					}
 				}
@@ -61,7 +75,7 @@ func collectInstructions(instructions *[]string, line string) {
 				instruction = "" // invalid
 			}
 		} else if char == 'm' {
-			instruction += "m"
+			instruction += "m" // potential "mul" instruction
 		}
 	}
 }
@@ -102,6 +116,8 @@ func Solution() {
 	shared.ScanFile("./solutions/daythree/input.txt", func(line string) {
 		collectInstructions(&instructions, line)
 	})
+
+	// fmt.Println(strings.Join(instructions, "\n"))
 
 	result := calculateInstructions(&instructions)
 
