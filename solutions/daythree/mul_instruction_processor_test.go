@@ -2,7 +2,7 @@ package daythree
 
 import "testing"
 
-func TestCollectInstructions(t *testing.T) {
+func TestMulInstructionProcessor(t *testing.T) {
 	tests := []struct {
 		line          string
 		expectedCount int
@@ -31,13 +31,15 @@ func TestCollectInstructions(t *testing.T) {
 	}
 
 	for _, tt := range tests {
+		mulInstructionProcessor := NewMulInstructionProcessor()
+
 		t.Run("should find expected mul instructions", func(t *testing.T) {
-			var instructions []string
+			mulInstructionProcessor.Collect(tt.line)
 
-			collectInstructions(&instructions, tt.line)
+			instructionsLen := len(*mulInstructionProcessor.Instructions)
 
-			if len(instructions) != tt.expectedCount {
-				t.Errorf("Expected %d instructions, got %d", tt.expectedCount, len(instructions))
+			if instructionsLen != tt.expectedCount {
+				t.Errorf("Expected %d instructions, got %d", tt.expectedCount, instructionsLen)
 			}
 		})
 	}
