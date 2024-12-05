@@ -11,6 +11,16 @@ func collectInstructions(instructions *[]string, line string) {
 	var instruction string
 	var commas int
 
+	resetInstruction := func() {
+		instruction = ""
+		commas = 0
+	}
+
+	saveInstruction := func() {
+		*instructions = append(*instructions, instruction)
+		resetInstruction()
+	}
+
 	for _, char := range line {
 		instructionLen := len(instruction)
 
@@ -19,60 +29,49 @@ func collectInstructions(instructions *[]string, line string) {
 			case 'm':
 				if char == 'u' {
 					instruction += "u"
+				} else {
+					resetInstruction()
 				}
 			case 'u':
 				if char == 'l' {
 					instruction += "l"
+				} else {
+					resetInstruction()
 				}
 			case 'l':
 				if char == '(' {
 					instruction += "("
+				} else {
+					resetInstruction()
 				}
 			case '(', ',':
 				switch char {
 				case '0', '1', '2', '3', '4', '5', '6', '7', '8', '9':
 					instruction += string(char)
+				default:
+					resetInstruction()
 				}
 			case '0', '1', '2', '3', '4', '5', '6', '7', '8', '9':
-				switch instructionLen {
-				// e.g. "mul(123"
-				case 7:
-					if char == ',' {
+				switch char {
+				case ',':
+					if commas == 0 {
 						instruction += ","
+						commas++
 					} else {
-						instruction = "" // invalid
+						resetInstruction()
 					}
-				// e.g. "mul(123,456"
-				case 11:
-					if char == ')' {
+				case ')':
+					if commas == 1 {
 						instruction += ")"
+						saveInstruction()
 					} else {
-						instruction = "" // invalid
+						resetInstruction()
 					}
+				case '0', '1', '2', '3', '4', '5', '6', '7', '8', '9':
+					instruction += string(char)
 				default:
-					switch char {
-					case ',':
-						if commas == 1 {
-							instruction = "" // invalid
-						} else {
-							instruction += ","
-							commas++
-						}
-					case ')':
-						if commas == 1 {
-							instruction += ")"
-						} else {
-							instruction = "" // invalid
-						}
-					case '0', '1', '2', '3', '4', '5', '6', '7', '8', '9':
-						instruction += string(char)
-					}
+					resetInstruction()
 				}
-			case ')':
-				*instructions = append(*instructions, instruction) // instruction found!
-				instruction = ""
-			default:
-				instruction = "" // invalid
 			}
 		} else if char == 'm' {
 			instruction += "m" // potential "mul" instruction
@@ -116,8 +115,6 @@ func Solution() {
 	shared.ScanFile("./solutions/daythree/input.txt", func(line string) {
 		collectInstructions(&instructions, line)
 	})
-
-	// fmt.Println(strings.Join(instructions, "\n"))
 
 	result := calculateInstructions(&instructions)
 
