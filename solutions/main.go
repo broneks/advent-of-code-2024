@@ -1,9 +1,9 @@
 package main
 
-import "aoc2024/solutions/daythree"
+import "aoc2024/solutions/day3"
 
 func main() {
-	// dayone.Solution()
-	// daytwo.Solution()
-	daythree.Solution()
+	// day1.Solution()
+	// day2.Solution()
+	day3.Solution()
 }

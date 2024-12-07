@@ -1,4 +1,4 @@
-package daytwo
+package day2
 
 import (
 	"aoc2024/shared"
@@ -40,7 +40,7 @@ func isGraduallyDecreasing(levels []int) bool {
 func Solution() {
 	safeCount := 0
 
-	shared.ScanFile("./solutions/daytwo/input.txt", func(line string) {
+	shared.ScanFile("./solutions/day2/input.txt", func(line string) {
 		parts := strings.Split(line, " ")
 
 		levels := make([]int, len(parts))

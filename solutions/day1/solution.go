@@ -1,4 +1,4 @@
-package dayone
+package day1
 
 import (
 	"aoc2024/shared"
@@ -13,7 +13,7 @@ func Solution() {
 	var listB []int
 	var distance int
 
-	shared.ScanFile("./solutions/dayone/input.txt", func(line string) {
+	shared.ScanFile("./solutions/day1/input.txt", func(line string) {
 		parts := strings.Split(line, "   ")
 
 		a, _ := strconv.Atoi(parts[0])

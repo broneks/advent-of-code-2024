@@ -1,4 +1,4 @@
-package daythree
+package day3
 
 import (
 	"aoc2024/shared"
@@ -57,7 +57,7 @@ func getMulResultForLine(line string) int {
 func Solution() {
 	var line string
 
-	shared.ScanFile("./solutions/daythree/input.txt", func(l string) {
+	shared.ScanFile("./solutions/day3/input.txt", func(l string) {
 		line += l
 	})
 
