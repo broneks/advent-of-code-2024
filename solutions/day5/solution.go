@@ -37,7 +37,7 @@ func isPageUpdateCorrect(pageUpdate []string, pageOrderingRules PageOrderingRule
 	return true
 }
 
-func getPageUpdateMiddleValue(pageUpdate []string, pageOrderingRules PageOrderingRules) int {
+func getCorrectPageUpdateMiddleValue(pageUpdate []string, pageOrderingRules PageOrderingRules) int {
 	if !isPageUpdateCorrect(pageUpdate, pageOrderingRules) {
 		return 0
 	}
@@ -51,7 +51,7 @@ func getPageUpdateMiddleValue(pageUpdate []string, pageOrderingRules PageOrderin
 	return middle
 }
 
-func Solution() {
+func scanInput() ([][]string, PageOrderingRules) {
 	pageOrderingRules := make(PageOrderingRules)
 	var pageUpdates [][]string
 	var hasReachedSeparator bool
@@ -80,10 +80,16 @@ func Solution() {
 		}
 	})
 
+	return pageUpdates, pageOrderingRules
+}
+
+func Solution() {
 	var result int
 
+	pageUpdates, pageOrderingRules := scanInput()
+
 	for _, pageUpdate := range pageUpdates {
-		result += getPageUpdateMiddleValue(pageUpdate, pageOrderingRules)
+		result += getCorrectPageUpdateMiddleValue(pageUpdate, pageOrderingRules)
 	}
 
 	fmt.Println(result)
